@@ -1,0 +1,80 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--Required Metatags-->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+        <!--Boottrap-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap-grid.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/LOGIN-styles.css') }}">
+		<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+		<script src="{{ url_for('static',filename='js/jquery1.min.js') }}"></script>
+		<!------ Include the above in your HEAD tag ---------->
+  		  			
+		<title>
+			Login Page
+      </title>
+      
+   </head>
+      
+	<body>
+		<div class="sidenav">
+         <div class="login-main-text">
+            <h2><a href="/" style="color: 	#00FFFF;">Student Repository</a> <br> Login Page</h2>
+            <p>Login or register from here to access.</p>
+         </div>
+      </div>
+      <div class="main">
+         <div class="col-md-6 col-sm-12">
+            <div class="login-form">
+
+               <form method="POST">
+                  <div class="form-group">
+                     
+                     <label>Roll Number</label>
+                     <input type="text" class="form-control" placeholder="Roll No" name="rollno" required>
+                  </div>
+
+                  <div class="form-group">
+                     
+                     <label>Password</label>
+                     <input type="password" class="form-control" placeholder="Password" name="password" required>
+                  </div>
+                  
+                  <button type="submit" class="btn btn-black"  formaction="/login">Login</button>
+                  <a href="{{ url_for('index') }}"><button type="button" class="btn btn-secondary">Back</button></a>
+               </form>
+            </div>
+            <br>
+            <br>
+            {% with messages = get_flashed_messages() %}
+               {% if messages %}
+                  <div class = "flashes" style="color:#DC143C; text-align:center;">
+                     {% for message in messages %}
+                        <h4>{{ message }}</h4>
+                     {% endfor %}   
+                  <div>
+               {% endif %}
+               {% endwith %}
+         </div>
+      </div>
+      <p></p>
+
+
+	</body>
+	
+	</html>
+
+
+
+
+
+
+
+
+

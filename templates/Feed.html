@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--Required Metatags-->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <!--Boottrap-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap-grid.css') }}">
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet"/>
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/Feed.css') }}">
+        <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+
+        </head>
+        <body>
+<!--<header>
+<nav id="header-nav" class="navbar navbar-default" style="background-color: black;">
+        <div class="navbar-header">
+          <a id="File-title" href="/" style="color: #00FFFF;font-family: 'Abril Fatface', cursive;"><h1 style="font-size: 3em;;">Student Repository</h1></a> 
+        </div>
+
+              <form method="POST">
+              <button type="submit" formaction="/logout" style="float: right;  border: solid 10px;border-color: black;" ><span class="glyphicon glyphicon-log-out" style="color:black;font-size:68px; padding: 10px;"><h5>LogOut</h5></span></button>
+              </form>
+               <!-- Trigger the modal with a button
+              <button id="myBtn"style="float: right; border: solid 10px;border-color: black;" class="btn  btn-lg" data-toggle="modal" data-target="#MyModal"><img src="{{url_for('static', filename = 'profile_pics/' + currentuser.image_file) }}" style="height: 103px; width: 100px;"></button>
+              <form method="POST">
+              <button type="submit" formaction="/detailspdf/{{ currentuser.id }}" id="myBtn"style="float: right; border: solid 10px;border-color: black;" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#MyModal">View<br>Your<br>PDF<button>
+              </form>        
+        
+
+</nav>
+</header>-->
+
+<nav class="navbar navbar-dark navbar-expand-sm " style="background-color:  #002147;">
+  <div class="container">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#Navbar">
+        <span class="navbar-toggler-icon"></span>  
+      </button>
+      <span class="navbar-text" style="color: white;float: right;padding: 10px;">
+          <h1><a href ="/">Student Repository</a></h1>
+      </span>
+  <div class="collapse navbar-collapse" id="Navbar" style="float: right;"> <!--style="float: center; -->
+     <ul class="navbar-nav mr-auto">
+       
+      <form method="GET">
+        <div class="row" >
+        <li class="nav-item"><button type="button" id="myBtn" style="float: right; border: solid 10px;border-color: #002147;" class="btn  btn-lg" data-toggle="modal" data-target="#MyModal"><img src="{{url_for('static', filename = 'profile_pics/' + currentuser.image_file) }}" style="height: 92px; width: 70px;"></button></li> 
+        <li class="nav-item"><button type="submit" formaction="/detailspdf/{{ currentuser.id }}" id="myBtn"style="float: right; border: solid 10px;border-color: #002147;" class="btn btn-primary btn-lg">View<br>Your<br>PDF<button></button></li>
+        <li class="nav-item"><button type="submit" formaction="/logout" style="float: right;  border: solid 10px;border-color: #002147;" ><span class="glyphicon glyphicon-log-out" style="color:black;font-size:38px; padding: 10px;"><h5>LogOut</h5></span></button></li>
+      </div>
+    </form>
+
+      </ul>
+  </div>
+</div>
+</nav>
+
+
+
+{% with messages = get_flashed_messages() %}
+      {% if messages %}
+          <div class = "flashes" style="color: #FFFFFF; text-align:center;">
+              {% for message in messages %}
+                  <h4>{{ message }}</h4>
+              {% endfor %}   
+          <div>
+      {% endif %}
+{% endwith %}
+
+
+<!-- The Modal -->
+<div id="MyModal" class="modal" style="width: 300px; align-self: center; right: 50%; left: 50%;">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+
+    <form method="POST" enctype="multipart/form-data">
+            <label for="10th ms"> Profile picture</label>
+            <input type="file" id="Profile_pic" name="profile_pic" accept="image/*">
+            <button type="submit" formaction="/profilepic/{{ currentuser.id }}" style="background-color: #4CAF50;">Save</button>
+            <button type="submit" formaction="/deletepic/{{ currentuser.id }}" class="btn btn-danger"> Delete</button>
+    </form>
+  </div>
+
+</div>
+
+
+
+<div id="Container">
+
+
+          <!-- Accordion wrapper -->
+<div class="accordion" id="accordionExample" >
+  <!-- Single collapse -->
+  <div id="headingOne" style="text-align: center;">
+    <h2>
+      <button
+        class="btn-info   text-left pl-3 block"
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapseOne"
+        aria-expanded="true"
+        aria-controls="collapseOne" style="width: 400px">
+        <i class="fa fa-user" style="font-size:48px;color: white"></i>   General Details
+      </button>
+    </h2>
+  </div>
+
+  <div
+    id="collapseOne"
+    class="collapse show pl-3"
+    aria-labelledby="headingOne"
+    data-parent="#accordionExample" style="background-image: linear-gradient(#A9A9A9, white); ">
+
+    <form method="POST">
+
+       <h2>General Details</h2>
+        <div class="form-row row">
+
+            {% if currentuser.fname != "None" %}
+            <div class="form-group col-4 col-xs-4">
+                <div class="form-content ">
+                  <h5 >First Name</h5>
+                  <label class="sr-only" for="exampleInputFN"><h5>First name</h5></label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter First name" name="fname" value ="{{currentuser.fname}}">
+              </div>
+            </div>
+            {% else %}
+            <div class="form-group col-4 col-xs-4">
+              <div class="form-content ">
+                <h5 >First Name</h5>
+                <label class="sr-only" for="exampleInputFN"><h5>First name</h5></label>
+                <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter First name" name="fname">
+            </div>
+          </div>
+          {% endif %}
+
+            {% if currentuser.mname !="None" %}
+            <div class="form-group col-4 col-xs-4">
+                <div class="form-content ">
+                  <h5 >Middle Name</h5>
+                  <label class="sr-only" for="exampleInputSN">Middle name</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputSN" placeholder="Enter Middle name" name="mname" value ="{{currentuser.mname}}">
+              </div>
+            </div>
+            {% else %}
+            <div class="form-group col-4 col-xs-4">
+              <div class="form-content ">
+                <h5 >Middle Name</h5>
+                <label class="sr-only" for="exampleInputSN">Second name</label>
+                <input type="text" class="form-control form-control-sm mr-1" id="exampleInputSN" placeholder="Enter Middle name" name="mname">
+            </div>
+          </div>
+          {% endif %}
+
+          {% if currentuser.sname != "None" %}
+            <div class="form-group col-4 col-xs-4">
+              <div class="form-content ">
+                  <h5 >Last Name</h5>
+                  <label class="sr-only" for="exampleInputSurname">Last name</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputSurname" placeholder="Enter Surname" name="sname" value ="{{currentuser.sname}}">
+              </div>
+            </div>
+            {% else %}
+            <div class="form-group col-4 col-xs-4">
+              <div class="form-content ">
+                  <h5 >Last Name</h5>
+                  <label class="sr-only" for="exampleInputSurname">Last name</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputSurname" placeholder="Enter Surname" name="sname">
+              </div>
+            </div>
+            {% endif %}
+
+            
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5 >Date Of Birth</h5>
+                  <label class="sr-only" for="exampleInputdob">Date of Birth</label>
+                  <input type="date" id="DOB" name="dob" value="{{currentuser.dob}}"> 
+              </div>
+            </div>
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                <h5 >Roll No.</h5>
+                  <label class="sr-only" for="exampleInputRN"><h2>Roll no.</h2></label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputRN" placeholder="Enter Rollno" name="rollno" value ="{{currentuser.rollno}}" readonly>
+                </div>
+            </div>
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5 >Age</h5>
+                  <label for="cars">Select the Age</label>
+                <select id="cars" name="age">
+                  <option value="{{currentuser.age}}">{{currentuser.age}}</option>
+                  <option value="17" name ="age">17</option>
+                  <option value="18" name ="age">18</option>
+                  <option value="19" name ="age">19</option>
+                  <option value="20" name ="age">20</option>
+                  <option value="21" name ="age">21</option>
+                  <option value="22" name ="age">22</option>
+                  <option value="Above 22" name ="age">Above 22</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col-6 col-xs-6">
+							<div class="form-content ">
+							    <h5 >Gender</h5>
+							    {% if currentuser.gender == "female" %}
+								<label class="sr-only" for="exampleInputgender">Gender</label>
+								<input type="radio" id="male" name="gender" value="male">
+								<label for="male">Male</label>
+								<input type="radio" id="female" name="gender" value="female" checked>
+								<label for="female">Female</label>
+								{% endif %}
+								{% if currentuser.gender == none %}
+								<label class="sr-only" for="exampleInputgender">Gender</label>
+								<input type="radio" id="male" name="gender" value="male">
+								<label for="male">Male</label>
+								<input type="radio" id="female" name="gender" value="female" >
+								<label for="female">Female</label>
+								{% endif %}
+								{% if currentuser.gender == "male" %}
+								<label class="sr-only" for="exampleInputgender">Gender</label>
+								<input type="radio" id="male" name="gender" value="male" checked>
+								<label for="male">Male</label>
+								<input type="radio" id="female" name="gender" value="female">
+								<label for="female">Female</label>
+								{% endif %}<br>
+							</div>
+						</div>
+
+
+            {% if currentuser.mobno != "None" %}
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5 >Mobile no.</h5>
+                  <label class="sr-only" for="exampleInputmobile">Mobile no.</label>
+                  (format: xxxxxxxxxx):
+                    <input type="tel" pattern="^\d{10}$" name ="mobno" value ="{{currentuser.mobno}}"required >  
+              </div>
+            </div>
+            {% else %}
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5 >Mobile no.</h5>
+                  <label class="sr-only" for="exampleInputmobile">Mobile no.</label>
+                  (format: xxxxxxxxxx):
+                    <input type="tel" pattern="^\d{10}$" name ="mobno"required >  
+              </div>
+            </div>
+            {% endif %}
+
+
+
+            {% if currentuser.email !="None" %}
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5>Mail ID</h5>
+                  <label class="sr-only" for="exampleInputmail">Mail ID</label>
+                  <input type="email" class="form-control form-control-sm mr-1" id="exampleInputmail" placeholder="Enter Mail ID." name="email" value ="{{currentuser.email}}">
+              </div>
+            </div>
+            {%else%}
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5>Mail ID</h5>
+                  <label class="sr-only" for="exampleInputmail">Mail ID</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputmail" placeholder="Enter Mail ID." name="email">
+              </div>
+            </div>
+            {% endif %}
+
+
+            <div class="form-group col-4 col-xs-4">
+              <div class="form-content ">
+                  <h5>Department</h5>
+                  <label class="sr-only" for="exampleInputmail">Department</label>
+                  <label for="cars">Select the Department</label>
+                  <select id="dept" name="dept"> 
+                  <option value="{{currentuser.dept}}">{{currentuser.dept}}</option>               
+                  <option value="CMPN" name ="dept">CMPN</option>
+                  <option value="INFT" name ="dept">INFT</option>
+                  <option value="ETRX" name ="dept" >ETRX</option>
+                  <option value="EXTC" name ="dept">EXTC</option>
+                  <option value="BIOMED" name ="dept">BIOMED</option>                  
+                </select>
+              </div>
+            </div>
+
+
+            <div class="form-group col-4 col-xs-4">
+              <div class="form-content ">
+                  <h5 >Year of Graduation</h5>
+                  <label for="yog">Year of Graduation</label>
+                <select id="yog" name="yog">
+                  <option value="{{currentuser.yog}}">{{currentuser.yog}}</option>
+                  <option value="2023" name ="yog">2023</option>
+                  <option value="2024" name ="yog">2024</option>
+                  <option value="2025" name ="yog">2025</option>
+                  <option value="2026" name ="yog">2026</option>
+                  <option value="2027" name ="yog">2027</option>
+                  <option value="2028" name ="yog">2028</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group col-4 col-xs-4">
+							<div class="form-content ">
+								<h5 >Division</h5>
+								{%if currentuser.div == none%}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B">
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C">
+									<label for="C">C</label><br>
+								{% endif %}
+								
+								{%if currentuser.div == "A" %}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B">
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C" checked>
+									<label for="C">C</label><br>
+								{% endif %}
+
+								{%if currentuser.div == "B" %}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B" checked>
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C">
+									<label for="C">C</label><br>
+								{% endif %}
+
+								{%if currentuser.div == "C" %}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B">
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C" checked>
+									<label for="C">C</label><br>
+								{% endif %}
+							</div>
+						</div>
+
+
+
+
+
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                <h5 >Enter The Name of Your Mentor</h5>
+                  <label class="sr-only" for="exampleInputRN"><h2>Mentor Name</h2></label>
+                  <select id="mentor" name="mentor"> 
+                    <option value="{{currentuser.mentor}}">{{currentuser.mentor}}</option>               
+                  <option value="Mentor_1" name ="mentor">Mentor 1</option>
+                  <option value="Mentor_2" name ="mentor">Mentor 2</option>
+                  <option value="Mentor_3" name ="mentor" >Mentor 3</option>                  
+                </select>
+                </div>
+            </div>
+
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                <h5 >Batch Number</h5>
+                  <label class="sr-only" for="exampleInputRN"><h2>Batch Number</h2></label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputBN" name="batchno" value ="{{currentuser.batchno}}" placeholder="Enter Batch no.">
+                </div>
+            </div>
+
+            <br>
+
+            <div class="form-group col-6 col-xs-6 align-selfcenter " style="text-align: center;">
+              <div class="form-content "> 
+                  <button type="button" class="btn-info btn-sm ml-auto" data-dismiss="modal">
+                  <input class="btn-info" type="submit" value="ADD" formaction="/addgen/{{ currentuser.id }}" style="border: none;"></button>
+              </div>
+            </div>
+
+            <div class="form-group col-6 col-xs-6" style="text-align: center;">           
+            <div class="form-content "> 
+                  <button type="button" class="btn-info btn-sm ml-auto " data-dismiss="modal"> <input type="reset" class="btn-info" style="border: none;"></button> 
+              </div>
+            </div>
+           
+
+            </div>
+          </form>
+        </div>
+  <!-- Single collapse -->
+
+  <!-- Single collapse -->
+  <div id="headingTwo" style="text-align: center;">
+    <h2>
+      <button
+        class="btn-info  text-left pl-3 collapsed"
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapseTwo"
+        aria-expanded="false"
+        aria-controls="collapseTwo" style="width: 400px"
+      >
+        <i class="fa fa-tasks" style="font-size:48px;color: white"></i>    Educational Details
+      </button>
+    </h2>
+  </div>
+
+  <div
+    id="collapseTwo"
+    class="collapse pl-3"
+    aria-labelledby="headingTwo"
+    data-parent="#accordionExample" style="background-image: linear-gradient(#A9A9A9, white);">
+     <div id="jumbotron" >
+        <h2 style="text-align: center;">Educational Details</h2>
+      <div id="form">
+        <h3 style="align-content: center;color: black">12th Details </h3>
+
+        <form method="POST">
+          <div class="form-row row">
+            
+            {% if currentuser.cllg != "None" %}
+            <div class="form-group col-6 col-xs-6">
+                <div class="form-content ">
+                  <h5 >Junior College Name</h5>
+                  <label class="sr-only" for="exampleInputFN">Junior College name</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter Junior College Name" name ="cllg" value ="{{currentuser.cllg}}">
+              </div>
+            </div>
+            {% else %}
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                <h5 >Junior College Name</h5>
+                <label class="sr-only" for="exampleInputFN">Junior College name</label>
+                <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter Junior College Name" name ="cllg" value ="{{currentuser.cllg}}">
+            </div>
+          </div>
+          {%endif%}
+
+
+            <div class="form-group col-6 col-xs-6">
+                <div class="form-content ">
+                  <h5 >Board</h5>
+                  <label class="sr-only" for="exampleInputFN">Board</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter Board"  name ="cllgboard" value ="{{currentuser.cllgboard}}">
+                </div>
+            </div>
+
+            <div class="form-group col-6 col-xs-6">
+                <div class="form-content ">
+                  <h5 >12th Percentage</h5>
+                  <label class="sr-only" for="exampleInputFN">12th Marks</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter 12th Marks"  name ="marks12" value ="{{currentuser.marks12}}">
+              </div>
+            </div>
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5 >Year of 12th Completion</h5>
+                  <label for="cars">Select the Year</label>
+                <select id="cars" name="compyear12">
+                  <option value="{{currentuser.compyear12}}">{{currentuser.compyear12}}</option>
+                  <option value="2018" name ="compyear12">2018</option>
+                  <option value="2017" name ="compyear12">2017</option>
+                  <option value="2016" name ="compyear12">2016</option>
+                  <option value="2015" name ="compyear12">2015</option>
+                  <option value="2014" name ="compyear12">2014</option>
+                  <option value="2013" name ="compyear12">2013</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </form>
+
+
+
+      </div>
+      <div id="form">
+        <h3 style="align-content: center;color: black;">10th Details </h3>
+
+        <form method="POST">
+          <div class="form-row row">
+  
+            {% if currentuser.school != "None" %}
+            <div class="form-group col-6 col-xs-6">
+                <div class="form-content ">
+                  <h5 >School Name</h5>
+                  <label class="sr-only" for="exampleInputFN">School name</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter School Name" name ="school" value ="{{currentuser.school}}">
+              </div>
+            </div>
+            {% else %}
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                <h5 >School Name</h5>
+                <label class="sr-only" for="exampleInputFN">School name</label>
+                <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter School Name" name ="school">
+            </div>
+          </div>
+          {% endif %}
+
+
+            {% if currentuser.schoolboard != "None" %}
+            <div class="form-group col-6 col-xs-6">
+                <div class="form-content ">
+                  <h5 >Board</h5>
+                  <label class="sr-only" for="exampleInputFN">Board</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter School Board" name ="schoolboard" value ="{{currentuser.schoolboard}}">
+              </div>
+            </div>
+
+            {% else %}
+
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                <h5 >Board</h5>
+                <label class="sr-only" for="exampleInputFN">Board</label>
+                <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter Board" name ="schoolboard">
+            </div>
+          </div>
+          {% endif %}
+
+            {% if currentuser.marks10 != "None" %}
+            <div class="form-group col-6 col-xs-6">
+                <div class="form-content ">
+                  <h5 >10th Percentage</h5>
+                  <label class="sr-only" for="exampleInputFN">10th Percentage</label>
+                  <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter 10th Marks" name ="marks10" value ="{{currentuser.marks10}}">
+              </div>
+            </div>
+            {% else %}
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                <h5 >10th Percentage</h5>
+                <label class="sr-only" for="exampleInputFN">10th Percentage</label>
+                <input type="text" class="form-control form-control-sm mr-1" id="exampleInputFN" placeholder="Enter 10th Marks" name ="marks10">
+            </div>
+          </div>
+          {% endif %}
+            
+
+            <div class="form-group col-6 col-xs-6">
+              <div class="form-content ">
+                  <h5 >Year Of 10th Completion</h5>
+                  <label class="sr-only" for="exampleInputmail">Year of Completion</label>
+                  <label for="cars">Select the Year</label>
+                <select id="cars" name="compyear10">   
+                  <option value="{{currentuser.compyear10}}">{{currentuser.compyear10}}</option>             
+                  <option value="2016" name ="compyear10">2016</option>
+                  <option value="2015" name ="compyear10">2015</option>
+                  <option value="2014" name ="compyear10">2014</option>
+                  <option value="2013" name ="compyear10">2013</option>
+                  <option value="2012" name ="compyear10">2012</option>                  
+                </select>
+              </div>
+            </div>
+            <div class="form-group col-6 col-xs-6 text-align" style="text-align: center;">
+              <div class="form-content "> 
+                  <button type="button" class="btn-info btn-sm ml-auto" data-dismiss="modal">
+                  <input type="submit" class="btn-info" value="ADD" formaction="/addedu/{{ currentuser.id }}" style="border: none;"></button>
+              </div>
+            </div>
+            <div class="form-group col-6 col-xs-6" style="text-align: center;">           
+            <div class="form-content"> 
+                  <button type="button" class="btn-info btn-sm ml-auto " data-dismiss="modal"> <input class="btn-info" type="reset" value="CLEAR" style="border: none;"></button>
+              </div>
+            </div>
+
+          </div>
+        </form>
+
+
+        
+      </div>
+    </div>
+  </div>
+  <!-- Single collapse -->
+
+ 
+  <div id="headingThree" style="text-align: center;">
+    <h2>
+      <button
+        class="btn-info text-left pl-3 collapsed "
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapseThree"
+        aria-expanded="false"
+        aria-controls="collapseThree" style="width: 400px"
+         >
+        <i class="fa fa-file" style="font-size:48px;color: white"></i>   Documents
+      </button>
+    </h2>
+  </div>
+
+
+  <div
+    id="collapseThree"
+    class="collapse pl-3"
+    aria-labelledby="headingThree"
+    data-parent="#accordionExample" style="background-image: linear-gradient(#A9A9A9, white); text-align: center;"  >
+
+   <form method="POST" enctype="multipart/form-data">
+
+       <h2>Documents</h2>
+
+    <div class="row">
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="12th ms">12th Marksheet:</label>
+          <input type="file" id="12th ms" name="marksheet12" accept="file_extension_pdf" >
+          <input type ="text" value = "{{currentuser.marksheet12name}}" readonly>
+          <button type="submit" id="button-doc" style="background-color: #4CAF50;" formaction="/uploadmarksheet12/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.marksheet12 %}
+          <button type="submit" class="btn btn-info" formaction="/downloadmarksheet12/{{ currentuser.id }}" ><i class="fa fa-download"></i> Download</button>
+          <button type="submit" class="btn btn-danger" formaction="/deletemarksheet12/{{ currentuser.id }}" >Delete</button>
+
+          {% if currentuser.marksheet12verify == none or currentuser.marksheet12verify == "Wait for Aunthentication" %}
+          <input type ="text" value = "Wait for Aunthentication" style="color: #ff0000; border: none;  background-color: transparent;"  readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.marksheet12verify}}" size="50" style="color: green; border: none;  background-color: transparent;" readonly>
+          {% endif %}
+
+          {% endif %}
+      </div>
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="10th ms"> 10th Marksheet:</label>
+          <input type="file" id="12th ms" name="marksheet10" accept="file_extension_pdf" value = "{{currentuser.marksheet10name}}">
+          <input type ="text" value = "{{currentuser.marksheet10name}}" readonly>
+          <button type="submit" id="button-doc" style="background-color: #4CAF50;" formaction="/uploadmarksheet10/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.marksheet10 %}
+          <button type="submit" class="btn btn-info" formaction="/downloadmarksheet10/{{ currentuser.id }}"><i class="fa fa-download"></i> Download</button>
+          <button  type="submit" class="btn btn-danger" formaction="/deletemarksheet10/{{ currentuser.id }}">Delete</button>
+
+          {% if currentuser.marksheet10verify == none or currentuser.marksheet10verify == "Wait for Aunthentication" %}
+          <input type ="text" value = "Wait for Aunthentication" style="color: #ff0000; border: none;  background-color: transparent;"  readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.marksheet10verify}}" size="50" style="color: green; border: none;  background-color: transparent;" readonly>
+          {% endif %}
+
+          
+          {% endif %}
+      </div>
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="12th ms">Last Semester Marksheet:</label>
+          <input type="file" id="12th ms" name="marksheetlastsem" accept="file_extension_pdf" value = "{{currentuser.marksheetlastsemname}}">
+          <input type ="text" value = "{{currentuser.marksheetlastsemname}}" readonly>
+          <button  type="submit" id="button-doc" style="background-color: #4CAF50;"  formaction="/uploadmarksheetlastsem/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.marksheetlastsem %}
+          <button  type="submit" class="btn btn-info" formaction="/downloadmarksheetlastsem/{{ currentuser.id }}" ><i class="fa fa-download" ></i> Download</button>
+          <button type="submit" class="btn btn-danger" formaction="/deletemarksheetlastsem/{{ currentuser.id }}">Delete</button>
+
+          {% if currentuser.marksheetlastsemverify == none or currentuser.marksheetlastsemverify == "Wait for Verification" %}
+          <input type ="text" value = "Wait for Aunthentication" style="color: #ff0000; border: none;  background-color: transparent;" readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.marksheetlastsemverify}}" size="50" style="color: green; border: none;  background-color: transparent;" readonly>
+          {% endif %}
+
+          {% endif %}
+      </div>
+      <p>
+        <br>
+      </p>
+  </div>
+  <p>
+    <br>
+  </p>
+  </form>
+  <p>
+    <br>
+  </p>
+  </div>
+</div>
+</div>
+  <!-- Single collapse -->
+
+  <!-- Single collapse -->
+  <div id="headingFour" style="text-align: center;">
+    <h2>
+      <button
+        class="btn-info text-left pl-3 collapsed "
+        type="button"
+        data-toggle="collapse"
+        data-target="#collapseFour"
+        aria-expanded="false"
+        aria-controls="collapseFour" style="width: 400px"
+         >
+        <i class="fa fa-file" style="font-size:48px;color: white"></i>   Extra Curriculum
+      </button>
+    </h2>
+  </div>
+
+
+  <div
+    id="collapseFour"
+    class="collapse pl-3"
+    aria-labelledby="headingFour"
+    data-parent="#accordionExample" style="background-image: linear-gradient(#A9A9A9, white);text-align: center; "  >
+
+   <form method="POST" enctype="multipart/form-data">
+
+      <h2>Extra Curriculum</h2>
+
+    <div class="row">
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="12th ms">Certificate 1</label>
+          <input type="file" id="12th ms" name="certificate1" accept="file_extension_pdf" value = "{{currentuser.certificate1name}}" >
+          <input type ="text" value = "{{currentuser.certificate1name}}" readonly>
+          <button type="submit" id="button-doc" style="background-color: #4CAF50;" formaction="/uploadcertificate1/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.certificate1name %}
+          <button type="submit" class="btn btn-info" formaction="/downloadcertificate1/{{ currentuser.id }}" ><i class="fa fa-download"></i> Download</button>
+          <button type="submit" class="btn btn-danger" formaction="/deletecertificate1/{{ currentuser.id }}" >Delete</button>
+          {% if currentuser.certificate1verify == none or currentuser.certificate1verify == "Wait for Verification" %}
+          <input type ="text" value = "Wait for Aunthentication" style="color: #ff0000; border: none; background-color: transparent;"  readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.certificate2verify}}" size="50" style="color: green; border: none; background-color: transparent;"readonly>
+          {% endif %}
+
+          {% endif %}
+      </div>
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="10th ms"> Certificte 2</label>
+          <input type="file" id="12th ms" name="certificate2" accept="file_extension_pdf" value = "{{currentuser.certificate2name}}">
+          <input type ="text" value = "{{currentuser.certificate2name}}" readonly>
+          <button type="submit" id="button-doc" style="background-color: #4CAF50;" formaction="/uploadcertificate2/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.certificate2 %}
+          <button type="submit" class="btn btn-info" formaction="/downloadcertificate2/{{ currentuser.id }}"><i class="fa fa-download"></i> Download</button>
+          <button  type="submit" class="btn btn-danger" formaction="/deletecertificate2/{{ currentuser.id }}">Delete</button>
+
+          {% if currentuser.certificate2verify == none or currentuser.certificate2verify == "Wait for Aunthentication" %}
+          <input type ="text" value = "Wait for Aunthentication" style="color: #ff0000; border: none;  background-color: transparent;" readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.certificate2verify}}" size="50" style="color: green; border: none;  background-color: transparent;" readonly>
+          {% endif %}
+
+          {% endif %}
+      </div>
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="12th ms">Certificate 3</label>
+          <input type="file" id="12th ms" name="certificate3" accept="file_extension_pdf" value = "{{currentuser.certificate3name}}">
+          <input type ="text" value = "{{currentuser.certificate3name}}" readonly>
+          <button  type="submit" id="button-doc" style="background-color: #4CAF50;"  formaction="/uploadcertificate3/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.certificate3name %}
+          <button  type="submit" class="btn btn-info" formaction="/downloadcertificate3/{{ currentuser.id }}" ><i class="fa fa-download" ></i> Download</button>
+          <button type="submit" class="btn btn-danger" formaction="/deletecertificate3/{{ currentuser.id }}">Delete</button>
+          {% if currentuser.certificate3verify == none or currentuser.certificate3verify == "Wait for Aunthentication" %}
+          <input type ="text" value = "Wait for Aunthentication" style="color: #ff0000; border: none;  background-color: transparent;"  readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.certificate3verify}}" size="50" style="color: green; border: none;  background-color: transparent;" readonly>
+          {% endif %}
+          
+          {% endif %}
+      </div>
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="12th ms">Certificate 4</label>
+          <input type="file" id="12th ms" name="certificate4" accept="file_extension_pdf" value = "{{currentuser.certificate4name}}">
+          <input type ="text" value = "{{currentuser.certificate4name}}" readonly>
+          <button  type="submit" id="button-doc" style="background-color: #4CAF50;"  formaction="/uploadcertificate4/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.certificate4name %}
+          <button  type="submit" class="btn btn-info" formaction="/downloadcertificate4/{{ currentuser.id }}" ><i class="fa fa-download" ></i> Download</button>
+          <button type="submit" class="btn btn-danger" formaction="/deletecertificate4/{{ currentuser.id }}">Delete</button>
+
+          {% if currentuser.certificate4verify == none or currentuser.certificate4verify == "Wait for Aunthentication" %}
+          <input type ="text" value ="Wait for Aunthentication" style="color: #ff0000; border: none;  background-color: transparent;"  readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.certificate4verify}}" size="50" style="color: green; border: none;  background-color: transparent;" readonly>
+          {% endif %}
+
+          {% endif %}
+      </div>
+      <p>
+        <br>
+      </p>
+      <div class="col-12 col-xs-12">
+        <label for="12th ms">Certificate 5</label>
+          <input type="file" id="12th ms" name="certificate5" accept="file_extension_pdf" value = "{{currentuser.certificate5name}}">
+          <input type ="text" value = "{{currentuser.certificate5name}}" readonly>
+          <button  type="submit" id="button-doc" style="background-color: #4CAF50;"  formaction="/uploadcertificate5/{{ currentuser.id }}">Submit</button>
+          {% if currentuser.certificate5name %}
+          <button  type="submit" class="btn btn-info" formaction="/downloadcertificate5/{{ currentuser.id }}" ><i class="fa fa-download" ></i> Download</button>
+          <button type="submit" class="btn btn-danger" formaction="/deletecertificate5/{{ currentuser.id }}">Delete</button>
+
+          {% if currentuser.certificate5verify == none or currentuser.certificate5verify == "Wait for Aunthentication" %}
+          <input type ="text" value = "Wait for Aunthentication" style="color: #ff0000; border: none;  background-color: transparent;"  readonly>
+          {% else %}
+          <input type ="text" value = "{{currentuser.certificate5verify}}" size="50" style="color: green; border: none;  background-color: transparent;" readonly>
+          {% endif %}
+
+          {% endif %}
+
+          <p>
+            <br>
+          </p>
+      </div>
+      <p>
+        <br>
+      </p>
+  </div>
+  </form>
+  </div>
+
+</div>
+
+ 
+<!-- Accordion wrapper -->
+<footer>
+    <div class="footer" style="background-color: #002147;">
+      <div class="container">
+        <div class="row">
+          <div class="col-4 offset-1 col-sm-2">
+            <h3>Links</h3>
+            <ul class="list-unstyled">
+              <li><a href="/">Home</a></li>
+              <li><a href="#">About us</a></li>             
+            </ul>
+          </div>
+                <div class="col-7 col-xs-5 col-sm-5">
+              
+            </div>
+            <div class="col-12 col-xs-4 col-sm-4 align-selfcenter">
+              
+            </div>
+      </div>  
+    </div>
+  </div>
+    </footer>
+    </body>
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script> 
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    
+    <!--<script type="text/javascript">
+      $(document).ready(function(){
+      $('.collapse').collapse()
+      });
+    </script>-->
+    <script type="text/javascript">
+      $(document).ready(function(){
+        // Get the modal
+var modal = document.getElementById("myModal");
+
+// Get the button that opens the modal
+var btn = document.getElementById("myBtn");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+
+// When the user clicks on the button, open the modal
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+      });
+    </script>
+  </html>

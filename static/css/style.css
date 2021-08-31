@@ -1,0 +1,84 @@
+body{
+	font-size: 16px;
+  font-family: 'Oxygen' ,sans-serif;
+}
+a{
+  text-decoration: none;
+  color: #000000;
+}
+/** HEADER 	**/
+header {
+	background-color:  #002147;
+}
+footer {
+	background-color: 	 #002147;
+}
+h1{
+	color: 	#FFFFFF;
+}
+h3{
+	color: #FFFFFF;
+}
+.grid {
+	display: grid;
+}
+.col-4{
+    width: 33.33%;
+}
+.col-6{
+	width: 50%;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  grid-gap: 10px;
+  grid-auto-rows: 100px;
+}
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+* {
+  box-sizing:border-box
+}
+.pad
+{
+  padding: 50px;
+}
+.information{
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0, 0.5); /* Black w/opacity/see-through */
+  
+  
+}
+.stu-info{
+  color: white;
+  height: 200px;
+}
+.teacher-info{
+   
+  color: white;
+  height: 200px;
+}
+.form-content{
+  padding: 20px;
+}
+

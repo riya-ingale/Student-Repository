@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <title>Details of {{ student.rollno}}</title>
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> -->
+    </head>
+    <body>
+        <h1>Student Repository</h1>
+        <!-- <table class="table">
+            <tr>
+            <td>First Name</td>
+            <td>{{ student.fname  }}</td>
+            </tr>
+            <tr>
+                <td>Middle Name</td>
+                <td>{{ student.mname  }}</td>
+            </tr>
+            <tr>
+                <td>SurName</td>
+                <td>{{ student.sname  }}</td>
+            </tr>
+            <tr>
+                <td>Roll No.</td>
+                <td>{{ student.rollno  }}</td>
+            </tr>
+            <tr>
+                <td>First Name</td>
+                <td>{{ student.fname  }}</td>
+            </tr>
+
+        </table> -->
+        <div style="font-size: medium;" class ="gen">
+            <p>
+                <h1>General Details</h1>
+                <p>
+                    <br>
+                </p>
+                <h2>Name : {{ student.fname }} {{ student.mname}} {{student.sname}}
+                <br>
+                Roll No. : {{ student.rollno }}
+                </h2>
+                <h3>
+                <br>
+                Date of Birth : {{student.dob }}
+                <br>
+                Age : {{ student.age }}
+                <br>
+                Gender : {{ student.gender }}
+                <br>
+                Mobile Number : {{ student.mobno }}
+                <br>
+                Email Id : {{ student.email }}
+                <br>
+                Graduating Year : {{student.yog}}
+                <br>
+                Department : {{ student.dept }}
+                <br>
+                Division : {{student.div }}
+                <br>
+                Batch Number : {{student.batchno}}
+                <br>
+                </h3>
+                <br>
+
+            </p>
+        </div>
+            <br>
+        <div style="font-size: medium;" class ="edu">
+                <p>
+                    <h1>Educational Details</h1>
+                    <p>
+                        <br>
+                    </p>
+                    <h3>Junior College name : {{ student.cllg }}
+                    <br>
+                    Junior College Board : {{ student.cllgboard }}
+                    <br>
+                    12th Marks : {{ student.marks12 }}
+                    <br>
+                    Year of 12th Completion : {{ student.comps12}}
+                    <br>
+                    School Name : {{student.school }}
+                    <br>
+                    School Board: {{ student.schoolboard }}
+                    <br>
+                    10th Marks : {{ student.marks10 }}
+                    <br>
+                    Year of 10th Completion : {{ student.comps10 }}</h3>
+                    <br>
+                </p>
+        </div>
+        <div style="font-size: medium;" class="docs">
+            <p>
+                <h1>Documents</h1>
+                <p>
+                    <br>
+                </p>
+                <h3>12th Marksheet : {{ student.marksheet12name }}
+                <br>
+                10th Marksheet : {{ student.marksheet10name }}
+                <br>
+                Last SemesterMarksheet : {{ student.marksheetlastsemname }}</h3>
+                <br>
+
+
+            </p>
+        </div>
+        </body>
+</html>

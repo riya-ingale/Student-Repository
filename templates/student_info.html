@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!--Required Metatags-->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1, shrink-to-fit=no">
+		<meta http-equiv="x-ua-compatible" content="ie=edge">
+        <!--Boottrap-->
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap-grid.css') }}">
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/style.css') }}">
+  
+  		  			
+		<title> Student Repository </title>
+		</head>
+	<body style="background-image: linear-gradient(#A9A9A9, white);">
+		<header>
+			<nav id="header-nav" class="navbar">
+				<div class="navbar-header">
+					<a href="/"><h1>Student Respository</h1></a> 
+				</div>
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#collapsable-nav">
+					<span class="sr-only">Options</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+			<form method = "POST">
+				<button type="submit" formaction="/dropsession" style="float: right;  border: solid 10px;border-color: #002147;" ><span class="glyphicon glyphicon-log-out" style="color:black;font-size:70px; padding: 10px;"><h5>LogOut</h5></span></button>
+                <!-- Trigger the modal with a button -->
+			    <button type="submit"  formaction="/admin" id="myBtn"  style="float: right; border: solid 10px;border-color: #002147;" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#MyModal"><i class="glyphicon glyphicon-user" style="color:lightblue;font-size: 55px;"><h3>Admin</h3></i></button>
+			</form>
+			</nav>
+		</header>
+
+        <p>
+		</p>
+		  {% with messages = get_flashed_messages() %}
+				{% if messages %}
+					<div class = "flashes" style="color:#DC143C; text-align:center;">
+						{% for message in messages %}
+							<h4>{{ message }}</h4>
+						{% endfor %}   
+					</div>
+				{% endif %}
+			{% endwith %}
+		
+		<p>
+		</p>             
+
+		
+        <div id="jumbotron" class="container" >
+        	<h2>General Details</h2>
+			<div id="form" >
+				
+				<form method="POST"> 
+
+					<div class="form-row row">
+						<div class="form-group col-4 ">
+						    <div class="form-content ">
+							    <h5 >First Name</h5>
+							    <label class="sr-only" for="firstname">First name</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="firstname" placeholder="Enter First name" name ="fname" value ={{student.fname}}>
+							</div>
+						</div>
+						<div class="form-group col-4 ">
+						    <div class="form-content ">
+							    <h5 >Middle Name</h5>
+							    <label class="sr-only" for="middlename">Second name</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="middlename" placeholder="Enter Second name" name ="mname" value ={{student.mname}}>
+							</div>
+						</div>
+						<div class="form-group col-4 ">
+							<div class="form-content ">
+							    <h5 >Last Name</h5>
+							    <label class="sr-only" for="Surname">Last name</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="Surname" placeholder="Enter Surname" name ="sname" value ={{student.sname}}>
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+								<h5 >Roll No.</h5>
+							    <label class="sr-only" for="rollno"><h2>Roll no.</h2></label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="rollno" placeholder="Enter Rollno" name ="rollno" value ={{student.rollno}}>
+						    </div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Date Of Birth</h5>
+							    <label class="sr-only" for="dob">Date of Birth</label>
+							    <input type="date" id="dOB" name="dob" value="{{ student.dob }}">	
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Age</h5>
+							    <label for="age">Select the Age</label>
+								<select id="age" name="age">
+								<option value="{{student.age}}">{{student.age}}</option>
+								<option value="17" name ="age">17</option>
+  								<option value="18" name ="age">18</option>
+  								<option value="19" name ="age">19</option>
+   								<option value="20" name ="age">20</option>
+   								<option value="21" name ="age">21</option>
+   								<option value="22" name ="age">22</option>
+   								<option value="Above 22" name ="age">Above 22</option>
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Gender</h5>
+							    {% if student.gender == "female" %}
+								<label class="sr-only" for="exampleInputgender">Gender</label>
+								<input type="radio" id="male" name="gender" value="male">
+								<label for="male">Male</label>
+								<input type="radio" id="female" name="gender" value="female" checked>
+								<label for="female">Female</label>
+								{% endif %}
+								{% if student.gender == none %}
+								<label class="sr-only" for="exampleInputgender">Gender</label>
+								<input type="radio" id="male" name="gender" value="male">
+								<label for="male">Male</label>
+								<input type="radio" id="female" name="gender" value="female" >
+								<label for="female">Female</label>
+								{% endif %}
+								{% if student.gender == "male" %}
+								<label class="sr-only" for="exampleInputgender">Gender</label>
+								<input type="radio" id="male" name="gender" value="male" checked>
+								<label for="male">Male</label>
+								<input type="radio" id="female" name="gender" value="female">
+								<label for="female">Female</label>
+								{% endif %}<br>
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Mobile no.</h5>
+							    <label class="sr-only" for="exampleInputmobile">Mobile no.</label>
+							    (format: xxxxxxxxxx):
+  									<input type="tel" pattern="^\d{10}$" name="mobno" value="{{student.mobno}}" required >  
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Mail ID</h5>
+							    <label class="sr-only" for="mail">Mail ID</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="mail" placeholder="Enter Mail ID." name="email" value="{{student.email}}">
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Department</h5>
+							    <label class="sr-only" for="dept">Deprtment</label>
+							    <label for="dept">Select the Department</label>
+								<select id="dept" name="dept">	
+								<option value="{{student.dept}}">{{student.dept}}</option>							
+ 							    <option value="CMPN" name="dept">CMPN</option>
+  								<option value="INFT"  name="dept" >INFT</option>
+  								<option value="ETRX"  name="dept">ETRX</option>
+   								<option value="EXTC"  name="dept">EXTC</option>
+   								<option value="BIOMED"  name="dept">BIOMED</option>   								
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+								<h5 >Division</h5>
+								{%if student.div == none%}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B">
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C">
+									<label for="C">C</label><br>
+								{% endif %}
+								
+								{%if student.div == "A" %}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B">
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C" checked>
+									<label for="C">C</label><br>
+								{% endif %}
+
+								{%if student.div == "B" %}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B" checked>
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C">
+									<label for="C">C</label><br>
+								{% endif %}
+
+								{%if student.div == "C" %}
+							    	<label class="sr-only" for="division">Division</label>
+							    	<input type="radio" id="A" name="div" value="A">
+	    							<label for="A">A</label>
+									<input type="radio" id="B" name="div" value="B">
+									<label for="B">B</label>
+									<input type="radio" id="C" name="div" value="C" checked>
+									<label for="C">C</label><br>
+								{% endif %}
+							</div>
+						</div>
+						<br>
+						
+					</div>
+				
+			</div>
+		</div>
+        <div id="jumbotron" class="container" >
+        	<h2>Educational Details</h2>
+			<div id="form" >
+					<div class="form-row row">
+						
+						<div class="form-group col-6 ">
+						    <div class="form-content ">
+							    <h5 >Junior College Name</h5>
+							    <label class="sr-only" for="collegename">Junior College name</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="collegename" placeholder="Enter Junior College Name"  name ="cllg" value = "{{student.cllg}}">
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+						    <div class="form-content ">
+							    <h5 >Board</h5>
+							    <label class="sr-only" for="cllgboard">Board</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="cllgboard" placeholder="Enter Board"  name ="cllgboard" value = "{{student.cllgboard}}">
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+						    <div class="form-content ">
+							    <h5 >12th Marks</h5>
+							    <label class="sr-only" for="marks12">12th Marks</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="marks12" placeholder="Enter 12th Marks"  name ="marks12" value = "{{student.marks12}}">
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Year Of 12th Completion</h5>
+							    <label class="sr-only" for="comp12">Year of Completion</label>
+							    <label for="comp12">Select the Year</label>
+								<select id="comp12" name="comp12">	
+								<option value="{{student.comp12}}">{{student.comp12}}</option>									
+ 							    <option value="2018"  name="comp12">2018</option>
+  								<option value="2017"  name="comp12">2017</option>
+  								<option value="2016"  name="comp12">2016</option>
+   								<option value="2015"  name="comp12">2015</option>
+   								<option value="2014"  name="comp12">2014</option>   								
+								</select>
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+						    <div class="form-content ">
+							    <h5 >School Name</h5>
+							    <label class="sr-only" for="schoolname">School name</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="schoolname" placeholder="Enter School Name" name ="school" value = "{{student.school}}">
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+						    <div class="form-content ">
+							    <h5 >Board</h5>
+							    <label class="sr-only" for="schoolboard">Board</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="schoolboard" placeholder="Enter Board"  name ="schoolboard" value = "{{student.schoolboard}}">
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+						    <div class="form-content ">
+							    <h5 >10th Marks</h5>
+							    <label class="sr-only" for="marks10">10th Marks</label>
+							    <input type="text" class="form-control form-control-sm mr-1" id="marks10" placeholder="Enter 10th Marks"  name ="marks10" value = "{{student.marks10}}">
+							</div>
+						</div>
+						<div class="form-group col-6 ">
+							<div class="form-content ">
+							    <h5 >Year Of 10th Completion</h5>
+							    <label class="sr-only" for="comp10">Year of Completion</label>
+							    <label for="comp10">Select the Year</label>
+								<select id="comp10" name="comp10">
+								<option value="{{student.comp12}}">{{student.comp12}}</option>									
+ 							    <option value="2016" name="comp10">2016</option>
+  								<option value="2015" name="comp10">2015</option>
+  								<option value="2014" name="comp10">2014</option>
+   								<option value="2013" name="comp10">2013</option>
+   								<option value="2012" name="comp10">2012</option>   								
+								</select>
+							</div>
+						</div>
+						
+					</div>
+				
+			</div>
+
+						
+		</div>
+
+		<div id="jumbotron" class="container" >
+			<h2>Documents</h2>
+			<div class="row">
+				      <div class="=col-4 " style="padding: 20px;">
+				        <label for="12th ms">12th Marksheet:</label>
+				            <button type="submit" formaction="/downloadmarksheet12mentor/{{ student.id }}" class="btn btn-info"><i class="fa fa-download"></i> Download</button>
+							<button type="submit" formaction="/deletemarksheet12mentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+							{% if student.marksheet12 %}
+							<h5>VERIFY</h5>
+							        {% if student.marksheet12verify == "Verified and Authenticate. Succesfully Added!"  %}
+									<label class="sr-only" for="12MSverify">Verification</label>
+				  
+									<input type="radio" id="verified12" name="12MSverify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verified12">Authenticate</label>
+									<input type="radio" id="notverified12" name="12MSverify" value="Not Verified.">
+									<label for="notverified12">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.marksheet12verify == "Not Verified."  %}
+									<label class="sr-only" for="12MSverify">Verification</label>
+				  
+									<input type="radio" id="verified12" name="12MSverify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verified12">Authenticate</label>
+									<input type="radio" id="notverified12" name="12MSverify" value="Not Verified." checked>
+									<label for="notverified12">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.marksheet12verify == "Wait for Aunthentication" or student.marksheet12verify == none %}
+									<label class="sr-only" for="12MSverify">Verification</label>
+				  
+									<input type="radio" id="verified12" name="12MSverify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verified12">Authenticate</label>
+									<input type="radio" id="notverified12" name="12MSverify" value="Not Verified.">
+									<label for="notverified12">Not Authenticate</label>
+									{% endif %}
+									<br>
+									{% else %}
+									<h5>NO FILE UPLOADED</h5>
+									{% endif %}
+								
+				      </div><p></p>
+				      <div class="=col-4" style="padding: 20px;">
+				         <label for="10th ms"> 10th Marksheet:</label>
+				            <button type="submit" formaction="/downloadmarksheet10mentor/{{ student.id }}"  class="btn btn-info"><i class="fa fa-download"></i> Download</button>
+							<button type="submit" formaction="/deletemarksheet10mentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+							{% if student.marksheet10 %}
+							<h5 >Verify</h5>
+							        {% if student.marksheet10verify == "Verified and Authenticate. Succesfully Added!" %}
+									<label class="sr-only" for="10MSverify">Verification</label>
+									<input type="radio" id="verified10" name="10MSverify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verified10">Authenticate</label>
+									<input type="radio" id="notverified10" name="10MSverify" value="Not Verified.">
+									<label for="notverified10">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.marksheet10verify == "Not Verified." %}
+									<label class="sr-only" for="10MSverify">Verification</label>
+									<input type="radio" id="verified10" name="10MSverify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verified10">Authenticate</label>
+									<input type="radio" id="notverified10" name="10MSverify" value="Not Verified." checked>
+									<label for="notverified10">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.marksheet10verify == "Wait for Aunthentication" or student.marksheet10verify == none %}
+									<label class="sr-only" for="10MSverify">Verification</label>
+									<input type="radio" id="verified10" name="10MSverify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verified10">Authenticate</label>
+									<input type="radio" id="notverified10" name="10MSverify" value="Not Verified.">
+									<label for="notverified10">Not Authenticate</label>
+									{% endif %}
+									<br>
+
+									{% else %}
+									<h5>NO FILE UPLOADED</h5>
+									{% endif %}
+				      </div><p></p>
+				      <div class="=col-4" style="padding: 20px;">
+				        <label for="12th ms">Last Semester Marksheet:</label>
+				            <button type="submit" formaction="/downloadmarksheetlastsemmentor/{{ student.id }}"  class="btn btn-info" ><i class="fa fa-download"></i> Download</button>
+				            <button type="submit" formaction="/deletemarksheetlastsemmentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+							{% if student.marksheetlastsem %}
+							<h5>VERIFY</h5>
+							        {% if student.marsheetlastsemverify == "Verified and Authenticate. Succesfully Added!"%}
+									<label class="sr-only" for="SEMMSverify">Verification</label>
+									<input type="radio" id="verifiedls" name="SEMMSverify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verifiedls">Authenticate</label>
+									<input type="radio" id="notverifiedls" name="SEMMSverify" value="Not Verified.">
+									<label for="notverifiedls">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.marksheetlastsemverify == "Not Verified."%}
+									<label class="sr-only" for="SEMMSverify">Verification</label>
+									<input type="radio" id="verifiedls" name="SEMMSverify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedls">Authenticate</label>
+									<input type="radio" id="notverifiedls" name="SEMMSverify" value="Not Verified." checked>
+									<label for="notverifiedls">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.marksheetlastsemverify == "Wait for Aunthentication"  or student.marksheetlastsemverify == none%}
+									<label class="sr-only" for="SEMMSverify">Verification</label>
+									<input type="radio" id="verifiedls" name="SEMMSverify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedls">Authenticate</label>
+									<input type="radio" id="notverifiedls" name="SEMMSverify" value="Not Verified.">
+									<label for="notverifiedls">Not Authenticate</label>
+									{% endif %}
+									<br>
+
+									{% else %}
+									<h5>NO FILE UPLOADED</h5>
+
+									{% endif %}
+				      </div>    
+				             
+			<div>
+		</div>
+
+		<div id="jumbotron" >
+			<h2>Certificates</h2>
+			<div class="row">
+				      <div class="=col-4" style="padding: 20px;">
+				        <label for="12th ms">Certificate 1:</label>
+							<button type="submit" formaction="/downloadcertificate1mentor/{{ student.id }}" class="btn btn-info"><i class="fa fa-download"></i> Download</button>
+							<button type="submit" formaction="/deletecertificate1mentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+							{% if student.certificate1%}
+
+							
+							<h5>VERIFY</h5>
+
+									{% if student.certificate1verify == "Verified and Authenticate. Succesfully Added!" %}
+									<label class="sr-only" for="certificate1verify">Verification</label>
+									<input type="radio" id="verifiedC1" name="certificate1verify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verifiedC1">Authenticate</label>
+									<input type="radio" id="notverifiedC1" name="certificate1verify" value="Not Verified.">
+									<label for="notverifiedC1">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.certificate1verify == "Not Verified." %}
+									<label class="sr-only" for="certificate1verify">Verification</label>
+				  
+									<input type="radio" id="verifiedC1" name="certificate1verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC1">Authenticate</label>
+									<input type="radio" id="notverifiedC1" name="certificate1verify" value="Not Verified." checked>
+									<label for="notverifiedC1">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.certificate1verify == "Wait for Aunthentication" or student.certificate1verify == none %}
+									<label class="sr-only" for="certificate1verify">Verification</label>
+				  
+									<input type="radio" id="verifiedC1" name="certificate1verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC1">Authenticate</label>
+									<input type="radio" id="notverifiedC1" name="certificate1verify" value="Not Verified.">
+									<label for="notverifiedC1">Not Authenticate</label>
+									{% endif %}
+
+							{% else %}
+							<h5>NO FILE UPLOADED</h5>	
+
+							{% endif %}	
+				  
+				  
+									<br>
+								
+					  </div><p></p>
+					  
+				      <div class="=col-4" style="padding: 20px;">
+				         <label for="10th ms"> Certificate 2:</label>
+							<button type="submit" formaction="/downloadcertificate2mentor/{{ student.id }}"  class="btn btn-info"><i class="fa fa-download"></i> Download</button>
+							<button type="submit" formaction="/deletecertificate2mentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+                  {% if student.certificate2%}
+
+							<h5>VERIFY</h5>
+							        {% if student.certificate2verify == "Verified and Authenticate. Succesfully Added!" %}
+									<label class="sr-only" for="certificate2verify">Verification</label>
+									<input type="radio" id="verifiedC2" name="certificate2verify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verifiedC2">Authenticate</label>
+									<input type="radio" id="notverifiedC2" name="certificate2verify" value="Not Authenticate">
+									<label for="notverifiedC2">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.certificate2verify == "Not Authenticate" %}
+									<label class="sr-only" for="certificate2verify">Verification</label>
+									<input type="radio" id="verifiedC2" name="certificate2verify" value="Verified and Authenticate. Succesfully Added!" >
+									<label for="verifiedC2">Authenticate</label>
+									<input type="radio" id="notverifiedC2" name="certificate2verify" value="Not Authenticate" checked>
+									<label for="notverifiedC2">Not Authenticate</label>
+									{% endif %}
+
+									{% if student.certificate2verify == "Wait for Aunthentication" or student.certificate2verify == none  %}
+									<label class="sr-only" for="certificate2verify">Verification</label>
+									<input type="radio" id="verifiedC2" name="certificate2verify" value="Verified and Authenticate. Succesfully Added!" >
+									<label for="verifiedC2">Authenticate</label>
+									<input type="radio" id="notverifiedC2" name="certificate2verify" value="Not Authenticate">
+									<label for="notverifiedC2">Not Authenticate</label>
+									{% endif %}
+
+									{% else %}
+						<h5>NO FILE UPLOADED</h5>
+						{% endif %}
+
+				  
+				  
+									<br>
+								
+					  </div><p></p>
+					  
+				      <div class="=col-4" style="padding: 20px;">
+				        <label for="12th ms">Certificate 3:</label>
+							<button type="submit" formaction="/downloadcertificate3mentor/{{ student.id }}"  class="btn btn-info" ><i class="fa fa-download"></i> Download</button>
+							<button type="submit" formaction="/deletecertificate3mentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+							{% if student.certificate3%}
+							<h5>VERIFY</h5>
+									{% if student.certificate3verify == "Verified and Authenticate. Succesfully Added!"  %}
+									<label class="sr-only" for="certificate3verify">Verification</label>
+									<input type="radio" id="verifiedC3" name="certificate3verify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verifiedC3">Authenticate</label>
+									<input type="radio" id="notverifiedC3" name="certificate3verify" value="Not Authenticate">
+									<label for="notverifiedC3">Not Authenticate</label>
+									{% endif%}
+									{% if student.certificate3verify == "Not Authenticate"  %}
+									<label class="sr-only" for="certificate3verify">Verification</label>
+									<input type="radio" id="verifiedC3" name="certificate3verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC3">Authenticate</label>
+									<input type="radio" id="notverifiedC3" name="certificate3verify" value="Not Authenticate" checked>
+									<label for="notverifiedC3">Not Authenticate</label>
+									{% endif%}
+									{% if student.certificate3verify == "Wait for Aunthentication" or student.certificate3verify == none %}
+									<label class="sr-only" for="certificate3verify">Verification</label>
+									<input type="radio" id="verifiedC3" name="certificate3verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC3">Authenticate</label>
+									<input type="radio" id="notverifiedC3" name="certificate3verify" value="Not Authenticate">
+									<label for="notverifiedC3">Not Authenticate</label>
+									{% endif%}
+
+									
+				  
+							{% else %}
+							<h5>NO FILE UPLOADED</h5>
+							{% endif %}
+									<br>
+							
+					  </div> 
+					  
+					  <div class="=col-4" style="padding: 20px;">
+				        <label for="12th ms">Certificate 4:</label>
+							<button type="submit" formaction="/downloadcertificate4mentor/{{ student.id }}"  class="btn btn-info" ><i class="fa fa-download"></i> Download</button>
+							<button type="submit" formaction="/deletecertificate4mentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+							{% if student.certificate4%}
+							<h5>VERIFY</h5>
+									{% if student.certificate4verify == "Verified and Authenticate. Succesfully Added!"  %}
+									<label class="sr-only" for="certificate4verify">Verification</label>
+									<input type="radio" id="verifiedC4" name="certificate4verify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verifiedC4">Authenticate</label>
+									<input type="radio" id="notverifiedC4" name="certificate4verify" value="Not Authenticate">
+									<label for="notverifiedC4">Not Authenticate</label>
+									{% endif%}
+									{% if student.certificate4verify == "Not Authenticate"  %}
+									<label class="sr-only" for="certificate3verify">Verification</label>
+									<input type="radio" id="verifiedC3" name="certificate4verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC4">Authenticate</label>
+									<input type="radio" id="notverifiedC3" name="certificate4verify" value="Not Authenticate" checked>
+									<label for="notverifiedC4">Not Authenticate</label>
+									{% endif%}
+									{% if student.certificate4verify == "Wait for Aunthentication" or student.certificate4verify == none %}
+									<label class="sr-only" for="certificate4verify">Verification</label>
+									<input type="radio" id="verifiedC3" name="certificate4verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC4">Authenticate</label>
+									<input type="radio" id="notverifiedC3" name="certificate4verify" value="Not Authenticate">
+									<label for="notverifiedC4">Not Authenticate</label>
+									{% endif%}
+				  
+									{% else %}
+									<h5>NO FILE UPLOADED</h5>
+									{% endif %}
+							<br>
+							
+					  </div> 
+					  
+					  <div class="=col-4" style="padding: 20px;">
+				        <label for="12th ms">Certificate 5:</label>
+							<button type="submit" formaction="/downloadcertificate5mentor/{{ student.id }}"  class="btn btn-info" ><i class="fa fa-download"></i> Download</button>
+							<button type="submit" formaction="/deletecertificate5mentor/{{ student.id }}"  class="btn btn-danger" ><i class="fa fa-download"></i>Delete</button>
+							{% if student.certificate5%}
+							<h5>VERIFY</h5>
+
+									{% if student.certificate5verify == "Verified and Authenticate. Succesfully Added!" %}
+									<label class="sr-only" for="certificate5verify">Verification</label>
+				  
+									<input type="radio" id="verifiedC5" name="certificate5verify" value="Verified and Authenticate. Succesfully Added!" checked>
+									<label for="verifiedC5">Authenticate</label>
+									<input type="radio" id="notverifiedC5" name="certificate5verify" value="Not Authenticate">
+									<label for="notverifiedC5">Not Authenticate</label>
+									{% endif %}
+									{% if student.certificate5verify == "Not Authenticate" %}
+									<label class="sr-only" for="certificate5verify">Verification</label>
+				  
+									<input type="radio" id="verifiedC5" name="certificate5verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC5">Authenticate</label>
+									<input type="radio" id="notverifiedC5" name="certificate5verify" value="Not Authenticate" checked>
+									<label for="notverifiedC5">Not Authenticate</label>
+									{% endif %}
+									{% if student.certificate5verify == "Wait for Aunthentication" or student.certificate5verify == none %}
+									<label class="sr-only" for="certificate5verify">Verification</label>
+				  
+									<input type="radio" id="verifiedC5" name="certificate5verify" value="Verified and Authenticate. Succesfully Added!">
+									<label for="verifiedC5">Authenticate</label>
+									<input type="radio" id="notverifiedC5" name="certificate5verify" value="Not Authenticate">
+									<label for="notverifiedC5">Not Authenticate</label>
+									{% endif %}
+				  
+									{% else %}
+									<h5>NO FILE UPLOADED</h5>
+									{% endif %}
+							<br>
+				      </div>  
+				      </div>
+				      </div>  
+				             
+			<div class="row">
+				<div class="form-group col-3 align-selfcenter ">
+							<div class="form-content ">	
+							<button type="submit" formaction="/mentoradd/{{ student.id }}" class="btn btn-info btn-sm ml-auto" data-dismiss="modal">UPDATE</button>
+							</div>
+						</div>
+						<div class="form-group col-3 ">						
+						<div class="form-content ">	
+							<button type="submit" formaction="/deletestudent/{{ student.id }}" class="btn btn-info btn-sm ml-auto" data-dismiss="modal">DELETE</button>	
+							</div>
+						</div><br>
+						<div class="form-group col-3 ">						
+						<div class="form-content ">	
+							<button type="submit" formaction="/mentor" class="btn btn-info btn-sm ml-auto" data-dismiss="modal">SEARCH</button>	
+							</div>
+						</div>
+						<div class="form-group col-3 ">						
+						<div class="form-content ">	
+							<button type="submit" formaction="/mentor" class="btn btn-info btn-sm ml-auto" data-dismiss="modal">CANCEL</button>	
+							</div>
+						</div>
+		</div>
+	</form>
+</div>
+</div>
+
+		<footer>
+		<div class="footer" style="width: 100%;">
+			<div class="container">
+				<div class="row">
+					<div class="col-4 offset-1 col-sm-2">
+						<h3>Links</h3>
+						<ul class="list-unstyled">
+							<li><a href="/">Home</a></li>
+							<li><a href="#">About us</a></li>							
+						</ul>
+					</div>
+						    <div class="col-7 col-sm-5">
+				    	
+				    </div>
+				    <div class="col-12 col-sm-4 align-selfcenter">
+				    	
+				    </div>
+			    </div>	
+		</div>
+	    </div>
+		</footer>
+
+		<script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+		<script type="text/javascript" src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+		
+	</body>
+</html5>
