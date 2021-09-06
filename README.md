@@ -11,6 +11,16 @@ This Web-Application makes Student’s data easily available so the physical wor
  
  In brief, we have proposed a system for smooth transfer of Documents and Certificates, their Authentication status, and Updation of Details between the student and the Mentor.
  
+ ### Commands to run the App on Local Machine
+ 
+Open Command Prompt
+```
+git clone https://github.com/riya-ingale/Student-Repository.git
+cd Student-Repository
+pip install requirements.txt
+python newapp.py
+```
+ 
  #### Collaborators along with me,
  [Samiksha Pansare](https://github.com/Samiksha-Pansare) and  [Deep Shahane](https://github.com/Deep-De-coder)
  
